@@ -1,0 +1,18 @@
+---
+- name: Update New Relic Agent on Windows
+  hosts: windows_servers
+  tasks:
+    - name: Create a temporary directory for the installer
+      ansible.windows.win_file:
+        path: C:\temp\newrelic
+        state: directory
+
+    - name: Download latest New Relic MSI
+      ansible.windows.win_get_url:
+        url: "https://download.newrelic.com/infrastructure_agent/windows/newrelic-infra.msi"
+        dest: C:\temp\newrelic\newrelic-infra.msi
+
+    - name: Install/Update the New Relic Agent
+      ansible.windows.win_package:
+        path: C:\temp\newrelic\newrelic-infra.msi
+        state: present
